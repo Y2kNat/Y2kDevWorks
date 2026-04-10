@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "badge": "Y2K_DevWorks // online",
+    "titulo": "Bots Discord que fazem a diferença",
+    "bio": "𝙳𝚎𝚜𝚎𝚗𝚟𝚘𝚕𝚟𝚎𝚍𝚘𝚛 𝚍𝚎 𝚜𝚒𝚜𝚝𝚎𝚖𝚊𝚜 𝚙𝚊𝚛𝚊 𝙳𝚒𝚜𝚌𝚘𝚛𝚍",
+    "descricao": "Sistemas personalizados para seu servidor Discord. Automação inteligente, moderação eficiente e whitelist profissional."
+  },
+  "stats": [
+    { "valor": 150, "label": "Usuários Ajudados" },
+    { "valor": 6, "label": "Projetos Ativos" },
+    { "valor": 1, "label": "Ano de XP" }
+  ],
+  "projetos": [
+    {
+      "nome": "Insight",
+      "tipo": "Sistema de Sugestões",
+      "descricao": "Sistema completo de sugestões com votação e análise de engajamento.",
+      "icone": "fa-lightbulb"
+    },
+    {
+      "nome": "Atlas",
+      "tipo": "Registro de Imóveis",
+      "descricao": "Sistema de registro e gerenciamento de propriedades para servidores RP.",
+      "icone": "fa-building"
+    },
+    {
+      "nome": "Vehix",
+      "tipo": "Registro de Veículos",
+      "descricao": "Sistema completo de registro e controle de veículos.",
+      "icone": "fa-car"
+    },
+    {
+      "nome": "HostVille Services",
+      "tipo": "Moderação & Staff",
+      "descricao": "Bots de moderação, sistema de warns e avaliação de staff.",
+      "icone": "fa-shield-alt"
+    },
+    {
+      "nome": "Cidade de Deus RP",
+      "tipo": "WhiteList Completa",
+      "descricao": "Bot completo de whitelist para servidor de Roleplay.",
+      "icone": "fa-list-check"
+    }
+  ],
+  "sobre": {
+    "nome": "Isac",
+    "bio": "𝙳𝚎𝚜𝚎𝚗𝚟𝚘𝚕𝚟𝚎𝚍𝚘𝚛 𝚍𝚎 𝚜𝚒𝚜𝚝𝚎𝚖𝚊𝚜 𝚙𝚊𝚛𝚊 𝙳𝚒𝚜𝚌𝚘𝚛𝚍",
+    "texto": "Meu nome é Isac, desenvolvedor de bots e sistemas para Discord com 1 ano de experiência em JavaScript e Python.",
+    "skills": ["JavaScript", "Python", "HTML", "Discord.js", "Node.js", "Automação"]
+  },
+  "contato": {
+    "discord": "@Y2k_Nat",
+    "email": "Y2k_Nat@hotmail.com",
+    "horario_semana": "13h às 21h",
+    "horario_fim": "14h às 22h"
+  }
+}
