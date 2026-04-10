@@ -164,7 +164,7 @@ app.get('/api/verify', authenticateToken, (req, res) => {
   });
 });
 
-// ===== DADOS DOS BOTS =====
+// ===== DADOS DOS BOTS (COM TOKENS DO .ENV) =====
 const botsData = {
   insight: {
     id: 'insight',
@@ -178,7 +178,7 @@ const botsData = {
     uptime: '99.98%',
     versao: '2.1.0',
     ultimaAtualizacao: '2026-04-10',
-    token: 'INSIGHT_TOKEN_123',
+    token: process.env.INSIGHT_TOKEN || 'INSIGHT_TOKEN_123',
     descricao: 'Sistema de sugestões com votação e análise de engajamento'
   },
   atlas: {
@@ -193,7 +193,7 @@ const botsData = {
     uptime: '99.95%',
     versao: '1.5.2',
     ultimaAtualizacao: '2026-04-09',
-    token: 'ATLAS_TOKEN_456',
+    token: process.env.ATLAS_TOKEN || 'ATLAS_TOKEN_456',
     descricao: 'Sistema de registro e gerenciamento de imóveis para servidores RP'
   },
   vehix: {
@@ -208,7 +208,7 @@ const botsData = {
     uptime: '99.92%',
     versao: '1.2.0',
     ultimaAtualizacao: '2026-04-08',
-    token: 'VEHIX_TOKEN_789',
+    token: process.env.VEHIX_TOKEN || 'VEHIX_TOKEN_789',
     descricao: 'Sistema completo de registro e controle de veículos'
   },
   hostville: {
@@ -223,7 +223,7 @@ const botsData = {
     uptime: '99.99%',
     versao: '3.0.1',
     ultimaAtualizacao: '2026-04-10',
-    token: 'HOSTVILLE_TOKEN_ABC',
+    token: process.env.HOSTVILLE_TOKEN || 'HOSTVILLE_TOKEN_ABC',
     descricao: 'Bot principal de moderação e gerenciamento'
   },
   hostvilleWarn: {
@@ -238,7 +238,7 @@ const botsData = {
     uptime: '99.97%',
     versao: '2.0.0',
     ultimaAtualizacao: '2026-04-10',
-    token: 'HOSTVILLE_WARN_TOKEN_DEF',
+    token: process.env.HOSTVILLE_WARN_TOKEN || 'HOSTVILLE_WARN_TOKEN_DEF',
     descricao: 'Sistema avançado de warns e punições'
   },
   hostvilleUtility: {
@@ -253,14 +253,14 @@ const botsData = {
     uptime: '98.50%',
     versao: '1.8.5',
     ultimaAtualizacao: '2026-04-07',
-    token: 'HOSTVILLE_UTILITY_TOKEN_GHI',
+    token: process.env.HOSTVILLE_UTILITY_TOKEN || 'HOSTVILLE_UTILITY_TOKEN_GHI',
     descricao: 'Bot utilitário com funções diversas'
   }
 };
 
 // ===== API DE BOTS =====
 
-// Rota para obter todos os bots (protegida)
+// Rota para obter todos os bots (protegida - sem tokens)
 app.get('/api/bots', authenticateToken, (req, res) => {
   const bots = Object.values(botsData).map(bot => ({
     id: bot.id,
@@ -275,7 +275,6 @@ app.get('/api/bots', authenticateToken, (req, res) => {
     versao: bot.versao,
     ultimaAtualizacao: bot.ultimaAtualizacao,
     descricao: bot.descricao
-    // Token NÃO é enviado por segurança
   }));
   
   res.json({
@@ -289,7 +288,7 @@ app.get('/api/bots', authenticateToken, (req, res) => {
   });
 });
 
-// Rota para obter um bot específico (protegida)
+// Rota para obter um bot específico (protegida - sem token)
 app.get('/api/bots/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const bot = botsData[id];
@@ -298,7 +297,6 @@ app.get('/api/bots/:id', authenticateToken, (req, res) => {
     return res.status(404).json({ error: 'Bot não encontrado' });
   }
   
-  // Não envia o token por segurança
   const { token, ...botSemToken } = bot;
   
   res.json({
@@ -307,8 +305,8 @@ app.get('/api/bots/:id', authenticateToken, (req, res) => {
   });
 });
 
-// Rota para obter detalhes COMPLETOS de um bot (inclui token - MUITO PROTEGIDA)
-app.get('/api/bots/:id/full', authenticateToken, (req, res) => {
+// Rota para obter token de um bot (MUITO PROTEGIDA)
+app.get('/api/bots/:id/token', authenticateToken, (req, res) => {
   const { id } = req.params;
   const bot = botsData[id];
   
@@ -316,14 +314,18 @@ app.get('/api/bots/:id/full', authenticateToken, (req, res) => {
     return res.status(404).json({ error: 'Bot não encontrado' });
   }
   
-  // Verifica se é admin (dupla verificação)
+  // Verifica se é admin
   if (req.user.role !== 'administrator') {
     return res.status(403).json({ error: 'Permissão negada' });
   }
   
   res.json({
     success: true,
-    bot: bot
+    bot: {
+      id: bot.id,
+      nome: bot.nome,
+      token: bot.token
+    }
   });
 });
 
@@ -369,12 +371,12 @@ app.post('/api/bots/:id/restart', authenticateToken, (req, res) => {
     return res.status(404).json({ error: 'Bot não encontrado' });
   }
   
-  // Simula reinicialização
   botsData[id].status = 'manutencao';
   
   setTimeout(() => {
     botsData[id].status = 'online';
     botsData[id].ultimaAtualizacao = new Date().toISOString().split('T')[0];
+    console.log(`✅ Bot ${botsData[id].nome} reiniciado com sucesso`);
   }, 3000);
   
   res.json({
@@ -490,6 +492,6 @@ function sanitizeContent(content) {
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`🔐 JWT configurado com segurança`);
-  console.log(`🤖 Monitor de Bots ativo`);
+  console.log(`🤖 Monitor de Bots ativo (${Object.keys(botsData).length} bots)`);
   console.log(`📁 Diretório: ${__dirname}`);
 });
