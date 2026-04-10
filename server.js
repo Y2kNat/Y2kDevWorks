@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Y2k2024@';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
