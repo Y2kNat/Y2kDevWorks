@@ -3,69 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manutenção - Y2K DevWorks</title>
+    <title>Em Manutenção - Y2kDevWorks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #a855f7;
+            --primary-dark: #9333ea;
+            --warning: #f59e0b;
+            --bg-dark: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%);
-            color: white;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.04) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
         .container {
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
+            width: 100%;
             padding: 50px 40px;
-            background: rgba(20, 20, 20, 0.9);
-            border: 2px solid rgba(255, 165, 0, 0.3);
-            border-radius: 24px;
-            box-shadow: 0 0 60px rgba(255, 165, 0, 0.2);
+            background: rgba(12, 12, 12, 0.95);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(245, 158, 11, 0.1);
+            backdrop-filter: blur(20px);
+            animation: fadeInUp 0.6s ease;
         }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            background: rgba(168, 85, 247, 0.1);
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            text-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo-text span:first-child { color: white; }
+        .logo-text .highlight { color: var(--primary); text-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
+        
         .icon {
             font-size: 5rem;
-            color: #f59e0b;
-            margin-bottom: 30px;
-            animation: spin 4s linear infinite;
+            color: var(--warning);
+            margin-bottom: 25px;
+            animation: pulse 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(245, 158, 11, 0.4));
         }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
         h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
+            font-weight: 800;
             margin-bottom: 15px;
-            color: #f59e0b;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #fff, var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        p {
-            color: #999;
-            margin-bottom: 30px;
-            line-height: 1.6;
+        
+        .message {
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            line-height: 1.7;
+            font-size: 1.05rem;
         }
-        .status {
-            display: inline-block;
-            padding: 8px 20px;
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
             background: rgba(245, 158, 11, 0.1);
-            border: 1px solid #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 50px;
-            color: #f59e0b;
+            color: var(--warning);
             font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
         }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        
+        .status-badge i {
+            font-size: 0.7rem;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            width: 75%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--warning), #fbbf24);
+            border-radius: 10px;
+            animation: progressPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        @keyframes progressPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .info-box {
+            padding: 20px;
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .info-box i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            background: transparent;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+        }
+        
+        .btn:hover {
+            border-color: var(--primary);
+            background: rgba(168, 85, 247, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #505050;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .footer i {
+            color: var(--primary);
+            margin: 0 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">⚠️</div>
+        <div class="logo">
+            <div class="logo-icon">&gt;_</div>
+            <div class="logo-text">
+                <span>Y2K</span><span class="highlight">DevWorks</span>
+            </div>
+        </div>
+        
+        <div class="icon">
+            <i class="fas fa-tools"></i>
+        </div>
+        
         <h1>Em Manutenção</h1>
-        <p>Estamos realizando melhorias no site para oferecer uma experiência ainda melhor.</p>
-        <p>Voltaremos em breve!</p>
-        <div class="status">Modo Manutenção</div>
-        <p style="margin-top: 40px; font-size: 0.85rem; color: #666;">
-            Y2K DevWorks • Atualização em andamento
+        
+        <p class="message">
+            Estamos realizando melhorias em nosso site para oferecer uma experiência ainda melhor.<br>
+            Voltaremos em breve!
         </p>
+        
+        <div class="status-badge">
+            <i class="fas fa-circle"></i>
+            <span>MODO MANUTENÇÃO</span>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <i class="fas fa-sync-alt fa-spin"></i> Atualização em andamento...
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <p>Nossos sistemas estarão disponíveis novamente em alguns instantes.</p>
+        </div>
+        
+        <a href="javascript:location.reload()" class="btn">
+            <i class="fas fa-rotate-right"></i> Verificar Status
+        </a>
+        
+        <div class="footer">
+            <i class="fas fa-terminal"></i> Y2kDevWorks <i class="fas fa-terminal"></i><br>
+            Sistemas e Automação para Discord
+        </div>
     </div>
+    
+    <script>
+        // Tentar reconectar automaticamente a cada 15 segundos
+        setInterval(() => {
+            fetch('/health')
+                .then(res => {
+                    if (res.ok) location.reload();
+                })
+                .catch(() => {});
+        }, 15000);
+    </script>
 </body>
 </html>
