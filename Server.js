@@ -45,26 +45,37 @@ async function initPasswordHash() {
 }
 initPasswordHash();
 
-// Middleware
+// Middleware básico (sem static ainda!)
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use(express.static(__dirname));
 
-// ===== ADICIONADO - Middleware para verificar se site está online =====
+// ===== ⭐⭐⭐ MIDDLEWARE DE STATUS DO SITE (AGORA ANTES DO STATIC!) ⭐⭐⭐ =====
 app.use((req, res, next) => {
+  const url = req.url;
+  
+  // Log para debug
+  console.log(`🔍 [STATUS] ${req.method} ${url} - Online: ${siteStatus.online} | Manut: ${siteStatus.maintenanceMode}`);
+  
   // Permitir acesso ao painel admin, API, e páginas de status mesmo offline
-  if (req.path === '/admin.html' || 
-      req.path === '/Admin.html' ||
-      req.path.startsWith('/api') || 
-      req.path === '/offline.html' ||
-      req.path === '/maintenance.html' ||
-      req.path === '/health') {
+  if (url.includes('/api/') || 
+      url.includes('/Admin.html') || 
+      url.includes('/admin.html') ||
+      url.includes('/offline.html') ||
+      url.includes('/maintenance.html') ||
+      url.includes('/health') ||
+      url.includes('.css') ||
+      url.includes('.js') ||
+      url.includes('.jpg') ||
+      url.includes('.png') ||
+      url.includes('.ico') ||
+      url.includes('.woff') ||
+      url.includes('/fonts/')) {
     return next();
   }
   
   // Se site estiver offline
   if (!siteStatus.online) {
-    // Verificar se o arquivo offline.html existe
+    console.log('🔴 Servindo página OFFLINE');
     const offlinePath = path.join(__dirname, 'offline.html');
     if (fs.existsSync(offlinePath)) {
       return res.status(503).sendFile(offlinePath);
@@ -82,6 +93,7 @@ app.use((req, res, next) => {
   
   // Se estiver em manutenção
   if (siteStatus.maintenanceMode) {
+    console.log('⚠️ Servindo página de MANUTENÇÃO');
     const maintenancePath = path.join(__dirname, 'maintenance.html');
     if (fs.existsSync(maintenancePath)) {
       return res.status(503).sendFile(maintenancePath);
@@ -99,6 +111,9 @@ app.use((req, res, next) => {
   
   next();
 });
+
+// ===== ⭐⭐⭐ AGORA SIM O EXPRESS.STATIC ⭐⭐⭐ =====
+app.use(express.static(__dirname));
 
 // ===== MIDDLEWARE DE AUTENTICAÇÃO JWT =====
 function authenticateToken(req, res, next) {
@@ -124,7 +139,7 @@ function blockMobile(req, res, next) {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   
   if (isMobile && req.path.startsWith('/api/')) {
-    if (req.path === '/api/login' || req.path === '/api/bot/heartbeat' || req.path === '/api/site-status' || req.path === '/api/save-site-status') {
+    if (req.path === '/api/login' || req.path === '/api/bot/heartbeat' || req.path === '/api/site-status') {
       return next();
     }
     return res.status(403).json({ error: 'Acesso administrativo apenas por desktop' });
@@ -147,7 +162,7 @@ app.get('/Admin.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'Admin.html'));
 });
 
-// ===== ADICIONADO - Rota Health Check (Railway) =====
+// ===== Rota Health Check (Railway) =====
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy',
@@ -157,7 +172,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ===== ADICIONADO - Rota para OBTER status do site =====
+// ===== Rota para OBTER status do site =====
 app.get('/api/site-status', (req, res) => {
   res.json({
     online: siteStatus.online,
@@ -167,9 +182,11 @@ app.get('/api/site-status', (req, res) => {
   });
 });
 
-// ===== ⭐⭐⭐ ADICIONADO - Rota para SALVAR status do site ⭐⭐⭐ =====
+// ===== ⭐⭐⭐ Rota para SALVAR status do site ⭐⭐⭐ =====
 app.post('/api/site-status', authenticateToken, (req, res) => {
   const { online, maintenanceMode } = req.body;
+  
+  console.log('📡 POST /api/site-status recebido:', { online, maintenanceMode });
   
   try {
     // Atualizar status
@@ -188,7 +205,8 @@ app.post('/api/site-status', authenticateToken, (req, res) => {
       action: `[API] Site alterado para: ${statusText} por ${req.user.user}`
     });
     
-    console.log(`🌐 Status do site alterado: ${statusText} por ${req.user.user}`);
+    console.log(`✅ Status do site atualizado: ${statusText}`);
+    console.log(`   online: ${siteStatus.online}, maintenanceMode: ${siteStatus.maintenanceMode}`);
     
     // Transmitir para terminais conectados
     broadcastStatus();
@@ -203,7 +221,7 @@ app.post('/api/site-status', authenticateToken, (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Erro ao salvar status:', error);
+    console.error('❌ Erro ao salvar status:', error);
     res.status(500).json({ error: 'Erro ao salvar status do site' });
   }
 });
