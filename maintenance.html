@@ -501,10 +501,7 @@
         </div>
         
         <div class="btn-group">
-            <a href="javascript:location.reload()" class="btn">
-                <i class="fas fa-rotate-right"></i> Verificar Status
-            </a>
-            <a href="/" class="btn btn-secondary">
+            <a href="/" class="btn">
                 <i class="fas fa-home"></i> Página Inicial
             </a>
         </div>
@@ -520,48 +517,5 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        // Tentar reconectar automaticamente
-        let retryCount = 0;
-        const maxRetries = 15;
-        
-        function checkStatus() {
-            fetch('/health')
-                .then(res => {
-                    if (res.ok) {
-                        location.reload();
-                    } else {
-                        retryCount++;
-                        updateRetryMessage();
-                    }
-                })
-                .catch(() => {
-                    retryCount++;
-                    updateRetryMessage();
-                });
-        }
-        
-        function updateRetryMessage() {
-            const progressText = document.querySelector('.progress-text span');
-            if (progressText && retryCount > 0) {
-                progressText.textContent = `Verificando (${retryCount}/${maxRetries})...`;
-            }
-        }
-        
-        // Verificar a cada 12 segundos
-        setInterval(checkStatus, 12000);
-        
-        // Verificar quando a página ficar visível novamente
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                retryCount = 0;
-                checkStatus();
-            }
-        });
-        
-        // Primeira verificação após 5 segundos
-        setTimeout(checkStatus, 5000);
-    </script>
 </body>
 </html>
