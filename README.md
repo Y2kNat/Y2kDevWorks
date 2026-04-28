@@ -62,16 +62,17 @@ sequenceDiagram
 
 ---
 
-✦ 𝚂𝙴𝙲𝚃𝙸𝙾𝙽𝚂
+## ✦ 𝚂𝙴𝙲𝚃𝙸𝙾𝙽𝚂
 
-Seção Descrição
-Loader Animação de terminal com barra de progresso
-Navbar Menu fixo com efeito glass ao scrollar
-Hero Banner principal com stats animados e CTA
-Soluções Grid de cards dos sistemas desenvolvidos
-Sobre Perfil com skills, conquistas e experiência
-Contato Links para Discord e Email com horários
-Footer Navegação, links sociais e copyright
+| Seção | Descrição |
+|--------|-----------|
+| `Loader` | Animação de terminal com barra de progresso |
+| `Navbar` | Menu fixo com efeito glass ao scrollar |
+| `Hero` | Banner principal com stats animados e CTA |
+| `Soluções` | Grid de cards dos sistemas desenvolvidos |
+| `Sobre` | Perfil com skills, conquistas e experiência |
+| `Contato` | Links para Discord e Email com horários |
+| `Footer` | Navegação, links sociais e copyright |
 
 ---
 
