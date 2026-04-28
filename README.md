@@ -11,7 +11,7 @@
 
 <br>
 
-<h1 align="center">🚀 𝚈𝟸𝚔𝙳𝚎𝚟𝚆𝚘𝚛𝚔𝚜</h1>
+<h1 align="center"> 𝚈𝟸𝚔𝙳𝚎𝚟𝚆𝚘𝚛𝚔𝚜</h1>
 
 <p align="center">
   Site institucional para apresentação de sistemas e automação para Discord.
