@@ -100,13 +100,14 @@ Theme Toggle Persistência via localStorage e API
 
 ---
 
-✦ 𝙳𝙸𝚁𝙴𝚃𝙾𝚁𝙸𝙴𝚂
+## ✦ 𝙳𝙸𝚁𝙴𝚃𝙾𝚁𝙸𝙴𝚂
 
-Arquivo / Pasta Descrição
-index.html Estrutura completa do site
-/api/content Endpoint que retorna JSON com dados dinâmicos
-localStorage Armazena tema, cor primária e configurações
-assets/ Imagens e recursos estáticos
+| Arquivo / Pasta | Descrição |
+|----------------|-----------|
+| `index.html` | Estrutura completa do site |
+| `/api/content` | Endpoint que retorna JSON com dados dinâmicos |
+| `localStorage` | Armazena tema, cor primária e configurações |
+| `assets/` | Imagens e recursos estáticos |
 
 ---
 
