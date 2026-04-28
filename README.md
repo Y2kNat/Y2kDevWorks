@@ -1,42 +1,50 @@
+
+---
+
 <p align="center">
   <img src="https://i.postimg.cc/L5PdRvV0/Screenshot-20260410-001601-Chrome.jpg" width="100%">
-</p><p align="center">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/status-active-success?style=for-the-badge">
   <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge">
   <img src="https://img.shields.io/badge/node-18%2B-339933?style=for-the-badge">
   <img src="https://img.shields.io/badge/discord.js-v14-5865F2?style=for-the-badge">
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge">
-</p><h1 align="center">🚀 Y2kDevWorks</h1><p align="center">
+</p>
+
+<h1 align="center">🚀 Y2kDevWorks</h1>
+
+<p align="center">
   Sistemas e automação para Discord • Arquitetura modular escalável
-</p><p align="center">
+</p>
+
+<p align="center">
   <b>Made by Y2k_Nat</b>
-</p>---
-
-✦ 🧠 Sobre
-
-O Y2kDevWorks é um conjunto de sistemas desenvolvidos para automação e gerenciamento de servidores Discord.
-
-O foco não é ser um “framework genérico”, mas sim entregar:
-
-- soluções diretas
-- sistemas eficientes
-- código reutilizável
-- organização modular
+</p>
 
 ---
 
-✦ ⚡ Características
+## ✦ 🧠 Sobre
 
-🧩 Modular        → Separação por sistemas independentes
-⚡ Performance     → Código otimizado + baixo consumo
-🔌 Integração     → APIs externas e banco de dados
-🛡 Segurança      → Controle por permissões
-📊 Monitoramento  → Logs e controle de ações
+O **Y2kDevWorks** é um conjunto de sistemas focados em automação e gerenciamento de servidores Discord.
+
+- 🧩 Estrutura modular  
+- ⚡ Alto desempenho  
+- 🔌 Integração com APIs  
+- 🛡 Controle de permissões  
 
 ---
 
-✦ 🏗️ Arquitetura
+## ✦ ⚡ Características
 
+🧩 Modular        → Sistemas independentes ⚡ Performance     → Código otimizado 🔌 Integração     → APIs e banco de dados 🛡 Segurança      → Permissões granulares 📊 Monitoramento  → Logs e controle
+
+---
+
+## ✦ 🏗️ Arquitetura
+
+```mermaid
 flowchart LR
     U[👤 Usuário] --> M[🤖 Core]
 
@@ -55,6 +63,7 @@ flowchart LR
 
     API --> M
     DB --> M
+
 
 ---
 
@@ -78,40 +87,6 @@ sequenceDiagram
 
 ---
 
-✦ 📦 Sistemas
-
-Sistema| Função
-🧠 Insight| Sugestões e análise
-🌐 Atlas| Registro de propriedades
-🚗 Vehix| Registro de veículos
-🛠 Utility| Ferramentas gerais
-⚠ Warn| Sistema de moderação
-
----
-
-✦ 📁 Estrutura
-
-Y2kDevWorks/
-├── core/
-├── insight/
-├── atlas/
-├── vehix/
-├── utility/
-├── warn/
-├── config/
-└── scripts/
-
----
-
-✦ 🚀 Execução
-
-git clone https://github.com/Y2kNat/Y2kDevWorks
-cd Y2kDevWorks
-npm install
-node core/index.js
-
----
-
 ✦ 🧩 Expansão
 
 /new-system
@@ -119,18 +94,20 @@ node core/index.js
 ├── commands/
 └── events/
 
-✔ Integração direta com o Core
-✔ Estrutura padronizada
-✔ Fácil manutenção
 
 ---
 
 ✦ 🎯 Objetivo
 
-- Centralizar sistemas
-- Reduzir código duplicado
-- Facilitar expansão
-- Manter organização
+Centralizar sistemas
+
+Reduzir duplicação de código
+
+Facilitar manutenção
+
+Escalar facilmente
+
+
 
 ---
 
@@ -138,8 +115,11 @@ node core/index.js
 
 🟢 Online • ⚡ Estável • 🔒 Seguro
 
+
 ---
 
 <p align="center">
   © 2026 Y2kDevWorks • Made by Y2k_Nat
 </p>
+```
+---
