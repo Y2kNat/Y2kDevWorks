@@ -77,6 +77,15 @@ app.get('/maintenance', (req, res) => {
   res.sendFile(path.join(__dirname, 'maintenance.html'));
 });
 
+/* ================= DISCORD VERIFICATION ================= */
+
+app.get('/.well-known/discord', (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Discord verification endpoint ativo"
+  });
+});
+
 /* ================= AUTH ================= */
 
 function authenticateToken(req, res, next) {
@@ -122,13 +131,9 @@ app.post('/api/login', async (req, res) => {
   }
 
   const token = jwt.sign(
-    {
-      user: 'admin'
-    },
+    { user: 'admin' },
     JWT_SECRET,
-    {
-      expiresIn: '24h'
-    }
+    { expiresIn: '24h' }
   );
 
   res.json({
@@ -166,21 +171,15 @@ app.post('/api/site-status', authenticateToken, (req, res) => {
 
 app.get('/api/content', (req, res) => {
   try {
-    const file = path.join(
-      __dirname,
-      'data',
-      'content.json'
-    );
+    const file = path.join(__dirname, 'data', 'content.json');
 
     if (!fs.existsSync(file)) {
       return res.json({});
     }
 
-    const content = JSON.parse(
-      fs.readFileSync(file, 'utf8')
-    );
-
+    const content = JSON.parse(fs.readFileSync(file, 'utf8'));
     res.json(content);
+
   } catch (err) {
     res.status(500).json({
       error: 'Erro ao carregar conteúdo'
@@ -190,11 +189,7 @@ app.get('/api/content', (req, res) => {
 
 app.post('/api/save', authenticateToken, (req, res) => {
   try {
-    const file = path.join(
-      __dirname,
-      'data',
-      'content.json'
-    );
+    const file = path.join(__dirname, 'data', 'content.json');
 
     fs.writeFileSync(
       file,
@@ -204,6 +199,7 @@ app.post('/api/save', authenticateToken, (req, res) => {
     res.json({
       success: true
     });
+
   } catch (err) {
     res.status(500).json({
       error: 'Erro ao salvar'
