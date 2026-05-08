@@ -119,10 +119,7 @@ app.post('/api/login', async (req, res) => {
     });
   }
 
-  const valid = await bcrypt.compare(
-    password,
-    ADMIN_PASSWORD_HASH
-  );
+  const valid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
 
   if (!valid) {
     return res.status(401).json({
@@ -196,9 +193,7 @@ app.post('/api/save', authenticateToken, (req, res) => {
       JSON.stringify(req.body.content, null, 2)
     );
 
-    res.json({
-      success: true
-    });
+    res.json({ success: true });
 
   } catch (err) {
     res.status(500).json({
@@ -209,6 +204,12 @@ app.post('/api/save', authenticateToken, (req, res) => {
 
 /* ================= START ================= */
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Compatível com Vercel (serverless)
+module.exports = app;
+
+// Railway / local
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
