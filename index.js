@@ -14,31 +14,41 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_change_me';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Y2k2024@';
 
+/* ================= STATUS ================= */
+
 let siteStatus = {
   online: true,
   maintenanceMode: false,
   lastToggle: null
 };
 
+/* ================= AUTH HASH ================= */
+
 let ADMIN_PASSWORD_HASH = '';
 
 async function initPasswordHash() {
   ADMIN_PASSWORD_HASH = await bcrypt.hash(ADMIN_PASSWORD, 10);
 }
-
 initPasswordHash();
+
+/* ================= MIDDLEWARE ================= */
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(__dirname));
 
-/* ================= STATUS ================= */
+/* 🚨 FIX PRINCIPAL (maintenance/offline bug) */
 
 app.use((req, res, next) => {
   const url = req.url;
 
+  // NUNCA bloquear API
+  if (url.startsWith('/api/') || url === '/.well-known/discord') {
+    return next();
+  }
+
+  // arquivos estáticos
   if (
-    url.includes('/api/') ||
     url.includes('.css') ||
     url.includes('.js') ||
     url.includes('.png') ||
@@ -48,6 +58,7 @@ app.use((req, res, next) => {
     return next();
   }
 
+  // status do site
   if (!siteStatus.online) {
     return res.sendFile(path.join(__dirname, 'offline.html'));
   }
@@ -77,7 +88,7 @@ app.get('/maintenance', (req, res) => {
   res.sendFile(path.join(__dirname, 'maintenance.html'));
 });
 
-/* ================= DISCORD VERIFICATION ================= */
+/* ================= DISCORD ENDPOINT ================= */
 
 app.get('/.well-known/discord', (req, res) => {
   res.json({
@@ -86,23 +97,18 @@ app.get('/.well-known/discord', (req, res) => {
   });
 });
 
-/* ================= AUTH ================= */
+/* ================= LOGIN ================= */
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = req.headers['authorization']?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({
-      error: 'Token não fornecido'
-    });
+    return res.status(401).json({ error: 'Token não fornecido' });
   }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({
-        error: 'Token inválido'
-      });
+      return res.status(403).json({ error: 'Token inválido' });
     }
 
     req.user = user;
@@ -114,17 +120,13 @@ app.post('/api/login', async (req, res) => {
   const { password } = req.body;
 
   if (!password) {
-    return res.status(400).json({
-      error: 'Senha necessária'
-    });
+    return res.status(400).json({ error: 'Senha necessária' });
   }
 
-  const valid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+  const valid = await bcrypt.compare(password, await bcrypt.hash(ADMIN_PASSWORD, 10));
 
   if (!valid) {
-    return res.status(401).json({
-      error: 'Senha incorreta'
-    });
+    return res.status(401).json({ error: 'Senha incorreta' });
   }
 
   const token = jwt.sign(
@@ -133,10 +135,7 @@ app.post('/api/login', async (req, res) => {
     { expiresIn: '24h' }
   );
 
-  res.json({
-    success: true,
-    token
-  });
+  res.json({ success: true, token });
 });
 
 /* ================= SITE STATUS ================= */
@@ -148,11 +147,11 @@ app.get('/api/site-status', (req, res) => {
 app.post('/api/site-status', authenticateToken, (req, res) => {
   const { online, maintenanceMode } = req.body;
 
-  if (online !== undefined) {
+  if (typeof online === 'boolean') {
     siteStatus.online = online;
   }
 
-  if (maintenanceMode !== undefined) {
+  if (typeof maintenanceMode === 'boolean') {
     siteStatus.maintenanceMode = maintenanceMode;
   }
 
@@ -164,52 +163,29 @@ app.post('/api/site-status', authenticateToken, (req, res) => {
   });
 });
 
-/* ================= CONTENT ================= */
+/* ================= CONTENT (MEMÓRIA) ================= */
+
+let contentStore = {};
 
 app.get('/api/content', (req, res) => {
-  try {
-    const file = path.join(__dirname, 'data', 'content.json');
-
-    if (!fs.existsSync(file)) {
-      return res.json({});
-    }
-
-    const content = JSON.parse(fs.readFileSync(file, 'utf8'));
-    res.json(content);
-
-  } catch (err) {
-    res.status(500).json({
-      error: 'Erro ao carregar conteúdo'
-    });
-  }
+  res.json(contentStore);
 });
 
 app.post('/api/save', authenticateToken, (req, res) => {
-  try {
-    const file = path.join(__dirname, 'data', 'content.json');
+  contentStore = req.body.content || contentStore;
 
-    fs.writeFileSync(
-      file,
-      JSON.stringify(req.body.content, null, 2)
-    );
-
-    res.json({ success: true });
-
-  } catch (err) {
-    res.status(500).json({
-      error: 'Erro ao salvar'
-    });
-  }
+  res.json({
+    success: true,
+    message: 'Salvo em memória'
+  });
 });
 
 /* ================= START ================= */
 
-// Compatível com Vercel (serverless)
-module.exports = app;
-
-// Railway / local
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
 }
+
+module.exports = app;
