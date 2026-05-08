@@ -1910,6 +1910,37 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
   }); 
 });
+
+// ===== SISTEMA DE VERIFICAÇÃO DE STATUS DO SITE =====
+async function checkSiteStatus() {
+  try {
+    const res = await fetch('/api/site-status?t=' + Date.now());
+    const data = await res.json();
+    console.log('📡 STATUS ATUAL DO SITE:', data);
+
+    if (data.online === false) {
+      console.log('🔴 Site OFFLINE - Redirecionando...');
+      window.location.href = '/offline';
+      return;
+    }
+
+    if (data.maintenanceMode === true) {
+      console.log('⚠️ Site em MANUTENÇÃO - Redirecionando...');
+      window.location.href = '/maintenance';
+      return;
+    }
+
+    console.log('🟢 Site ONLINE - Tudo normal!');
+  } catch (err) {
+    console.error('❌ Erro ao verificar status:', err);
+  }
+}
+
+// Verifica imediatamente ao carregar
+checkSiteStatus();
+
+// Verifica a cada 3 segundos
+setInterval(checkSiteStatus, 3000);
 </script>
 
 </body>
