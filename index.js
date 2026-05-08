@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -22,14 +21,9 @@ let siteStatus = {
   lastToggle: null
 };
 
-/* ================= AUTH HASH ================= */
+/* ================= MEMÓRIA ================= */
 
-let ADMIN_PASSWORD_HASH = '';
-
-async function initPasswordHash() {
-  ADMIN_PASSWORD_HASH = await bcrypt.hash(ADMIN_PASSWORD, 10);
-}
-initPasswordHash();
+let contentStore = {};
 
 /* ================= MIDDLEWARE ================= */
 
@@ -37,13 +31,18 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(__dirname));
 
-/* 🚨 FIX PRINCIPAL (maintenance/offline bug) */
+/* ================= PROTEÇÃO SITE ================= */
 
 app.use((req, res, next) => {
   const url = req.url;
 
-  // NUNCA bloquear API
+  // 🚨 SEMPRE liberar API
   if (url.startsWith('/api/') || url === '/.well-known/discord') {
+    return next();
+  }
+
+  // 🚨 SEMPRE liberar admin (EVITA LOCK TOTAL)
+  if (url.startsWith('/admin')) {
     return next();
   }
 
@@ -58,11 +57,12 @@ app.use((req, res, next) => {
     return next();
   }
 
-  // status do site
+  // OFFLINE MODE
   if (!siteStatus.online) {
     return res.sendFile(path.join(__dirname, 'offline.html'));
   }
 
+  // MAINTENANCE MODE
   if (siteStatus.maintenanceMode) {
     return res.sendFile(path.join(__dirname, 'maintenance.html'));
   }
@@ -70,7 +70,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ================= ROTAS ================= */
+/* ================= ROTAS FRONT ================= */
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -97,7 +97,7 @@ app.get('/.well-known/discord', (req, res) => {
   });
 });
 
-/* ================= LOGIN ================= */
+/* ================= AUTH ================= */
 
 function authenticateToken(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
@@ -116,6 +116,8 @@ function authenticateToken(req, res, next) {
   });
 }
 
+/* ================= LOGIN ================= */
+
 app.post('/api/login', async (req, res) => {
   const { password } = req.body;
 
@@ -123,7 +125,10 @@ app.post('/api/login', async (req, res) => {
     return res.status(400).json({ error: 'Senha necessária' });
   }
 
-  const valid = await bcrypt.compare(password, await bcrypt.hash(ADMIN_PASSWORD, 10));
+  const valid = await bcrypt.compare(
+    password,
+    await bcrypt.hash(ADMIN_PASSWORD, 10)
+  );
 
   if (!valid) {
     return res.status(401).json({ error: 'Senha incorreta' });
@@ -135,7 +140,10 @@ app.post('/api/login', async (req, res) => {
     { expiresIn: '24h' }
   );
 
-  res.json({ success: true, token });
+  res.json({
+    success: true,
+    token
+  });
 });
 
 /* ================= SITE STATUS ================= */
@@ -165,8 +173,6 @@ app.post('/api/site-status', authenticateToken, (req, res) => {
 
 /* ================= CONTENT (MEMÓRIA) ================= */
 
-let contentStore = {};
-
 app.get('/api/content', (req, res) => {
   res.json(contentStore);
 });
@@ -176,7 +182,7 @@ app.post('/api/save', authenticateToken, (req, res) => {
 
   res.json({
     success: true,
-    message: 'Salvo em memória'
+    message: 'Conteúdo salvo em memória'
   });
 });
 
