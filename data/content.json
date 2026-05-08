@@ -7,16 +7,16 @@
   },
   "stats": [
     {
-      "valor": 150,
+      "valor": 250,
       "label": "Usuários Ajudados"
     },
     {
-      "valor": 6,
+      "valor": 7,
       "label": "Projetos Ativos"
     },
     {
       "valor": 1,
-      "label": "Ano de XP"
+      "label": "Ano de Experiência"
     }
   ],
   "projetos": [
@@ -45,9 +45,9 @@
       "icone": "fa-shield-alt"
     },
     {
-      "nome": "Cidade de Deus RP",
-      "tipo": "WhiteList Completa",
-      "descricao": "Bot completo de whitelist para servidor de Roleplay com todas as funcionalidades.",
+      "nome": "Ascend",
+      "tipo": "Sistema de Tiers",
+      "descricao": "Bot de tiers e níveis com missões",
       "icone": "fa-list-check"
     },
     {
@@ -58,14 +58,14 @@
     }
   ],
   "sobre": {
-    "nome": "Isac",
+    "nome": "Isac Ornelas",
     "bio": "𝙳𝚎𝚜𝚎𝚗𝚟𝚘𝚕𝚟𝚎𝚍𝚘𝚛 𝚍𝚎 𝚜𝚒𝚜𝚝𝚎𝚖𝚊𝚜 𝚙𝚊𝚛𝚊 𝙳𝚒𝚜𝚌𝚘𝚛𝚍",
     "texto": "Meu nome é Isac, desenvolvedor de bots e sistemas para Discord com 1 ano de experiência em JavaScript e Python. Comecei criando pequenas automações e hoje desenvolvo sistemas completos de whitelist, moderação e gestão.\n\nMinha paixão por lógica e resolução de problemas vem da matemática, onde conquistei o bicampeonato paulista olímpico. Essa mesma lógica aplico no desenvolvimento de bots eficientes e bem estruturados.",
-    "skills": ["JavaScript", "Python", "HTML", "Discord.js", "Node.js", "Automação"]
+    "skills": ["JavaScript", "Python", "HTML", "Discord.js", "Node.js", "CSS3", "EJS", "Automação"]
   },
   "contato": {
     "discord": "@Y2k_Nat",
-    "email": "Y2k_Nat@hotmail.com",
+    "email": "ornelasisac13@gmail.com",
     "horario_semana": "13h às 21h",
     "horario_fim": "14h às 22h"
   }
