@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Insight",
+    "tag": "Sistema de Sugestoes",
+    "description": "Sistema de sugestões para comunidades com votação, moderação, estatísticas e configuração automática.",
+    "tagsArr": ["Discord.js", "Node.js"],
+    "imageSrc": "Insight.png"
+  },
+  {
+    "id": 2,
+    "title": "Atlas",
+    "tag": "Registro de Imoveis",
+    "description": "Sistema completo para Roleplay com registro de imóveis, gerenciamento de gangues e controle policial.",
+    "tagsArr": ["Discord.js", "Node.js"],
+    "imageSrc": "Atlas.png"
+  },
+  {
+    "id": 3,
+    "title": "Vehix",
+    "tag": "Registro de Veiculos",
+    "description": "Sistema profissional para registro e gerenciamento de veículos em servidores Roleplay.",
+    "tagsArr": ["Discord.js", "Node.js"],
+    "imageSrc": "Vehix.png"
+  },
+  {
+    "id": 4,
+    "title": "HostVille Services",
+    "tag": "Moderacao & Staff",
+    "description": "Sistema de moderação com registro de advertências, punições e análise da equipe administrativa.",
+    "tagsArr": ["Discord.js", "Node.js", "Automação", "Staff"],
+    "imageSrc": "HostVille.png"
+  },
+  {
+    "id": 5,
+    "title": "Ascend",
+    "tag": "Sistema de Tiers",
+    "description": "Sistema de evolução por tiers com gerenciamento de sessões, cargos automáticos e controle de progresso.",
+    "tagsArr": ["Node.js", "Discord.js"],
+    "imageSrc": "Ascend.png"
+  },
+  {
+    "id": 6,
+    "title": "Seu Projeto",
+    "tag": "Sob Demanda",
+    "description": "Precisa de um sistema personalizado? Entre em contato para desenvolvermos juntos.",
+    "tagsArr": ["Orçamento", "Personalizado"],
+    "imageSrc": "SeuProjeto.png"
+  }
+]
