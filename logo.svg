@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="112" fill="#EDE9E0"/>
+
+<polygon points="256,115 360,175 256,235 152,175" fill="#BC8737"/><polygon points="256,175 360,235 256,295 152,235" fill="#241C15" opacity="0.9"/><polygon points="256,235 360,295 256,355 152,295" fill="#241C15" opacity="0.55"/>
+<text x="256" y="396" text-anchor="middle" font-family="'Space Grotesk', Inter, Arial, sans-serif" font-weight="700" font-size="34" letter-spacing="4" fill="#241C15">Y2kDevWorks</text>
+<text x="256" y="424" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="14" letter-spacing="4" fill="#746A5F">#Node.js</text>
+</svg>
