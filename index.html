@@ -326,6 +326,8 @@
     </div>
   </div>
 
+  <script src="js/gsap.min.js"></script>
+  <script src="js/ScrollTrigger.min.js"></script>
   <script>
     (function() {
       var items = [], len = 0, active = 0;
@@ -516,6 +518,36 @@
       var statUsers = document.getElementById('stat-users'); var hasAnimated = false;
       var observer = new IntersectionObserver(function(entries) { entries.forEach(function(entry) { if (entry.isIntersecting && !hasAnimated) { hasAnimated = true; var c = 0; var t = 600; var d = 1400; var s = Math.ceil(t / (d / 16)); var ti = setInterval(function() { c += s; if (c >= t) { statUsers.textContent = t + '+'; clearInterval(ti); } else { statUsers.textContent = c + '+'; } }, 16); observer.unobserve(entry.target); } }); }, { threshold: 0.5 });
       if (statUsers) observer.observe(statUsers);
+    })();
+  </script>
+  <script>
+    (function() {
+      if (typeof gsap === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      var start = function() {
+        var tl = gsap.timeline({ delay: 1.25, defaults: { ease: 'power3.out' } });
+        tl.from('.hero-title', { y: 44, opacity: 0, duration: 0.95 })
+          .from('.hero-desc', { y: 26, opacity: 0, duration: 0.7 }, '-=0.6')
+          .from('.stats-row .stat-item', { y: 22, opacity: 0, stagger: 0.09, duration: 0.6, ease: 'power2.out' }, '-=0.45')
+          .from('.hero-actions', { y: 20, opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+          .from('.trust-strip .trust-item', { opacity: 0, x: -10, stagger: 0.1, duration: 0.5 }, '-=0.35');
+      };
+      if (document.readyState === 'complete') { start(); }
+      else { window.addEventListener('load', start); }
+
+      var reveal = function(target, vars) {
+        gsap.from(target, Object.assign({ y: 34, opacity: 0, duration: 0.8, ease: 'power2.out' }, vars || {}, { scrollTrigger: { trigger: target, start: 'top 85%', once: true } }));
+      };
+
+      reveal('.section-head');
+      reveal('.card-stack-wrapper', { scale: 0.97 });
+      reveal('.profile-card');
+      gsap.from('.about-content > *', { y: 26, opacity: 0, stagger: 0.09, duration: 0.7, ease: 'power2.out', scrollTrigger: { trigger: '.about-grid', start: 'top 80%', once: true } });
+      reveal('.contact-wrapper');
+      gsap.from('.footer-grid > *', { y: 24, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power2.out', scrollTrigger: { trigger: '.footer-grid', start: 'top 90%', once: true } });
     })();
   </script>
 </body>
